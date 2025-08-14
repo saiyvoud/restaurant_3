@@ -24,17 +24,17 @@ const SizeBarComponent = ({ children }) => {
     {
       title: "Sale",
       icon: <MenuSquareIcon />,
-      path: "/login",
+      path: "/sale",
     },
     {
-      title: "Order",
+      title: "Category",
       icon: <Book />,
-      path: "/login",
+      path: "/category",
     },
     {
       title: "Product",
       icon: <ForkKnifeCrossed />,
-      path: "/login",
+      path: "/product",
     },
     {
       title: "Table",
@@ -72,15 +72,17 @@ const SizeBarComponent = ({ children }) => {
         {/* menu */}
         <div className="space-y-5 mt-2">
           {tapMenu.map((item, index) => (
-            <div
+            <div key={index}
               onClick={() => {
-                navigator(item.path)
                 SetIndex(index);
+                navigator(item.path)
+               
+           
               }}
               className={
                 currentIndex == index
-                  ? "flex bg-amber-300 h-10  m-2 rounded-xl "
-                  : "flex bg-white h-10  m-2 rounded-xl hover:bg-amber-300 "
+                  ? "flex bg-amber-300 h-10  m-2 rounded-xl"
+                  : "flex bg-white h-10  m-2 rounded-xl hover:bg-amber-300"
               }
             >
               <div className="px-4 p-1.5 ">{item.icon}</div>
