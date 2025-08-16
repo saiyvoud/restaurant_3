@@ -11,12 +11,15 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.11",
+    "framer-motion": "^12.23.12",
     "lucide": "^0.536.0",
     "lucide-react": "^0.536.0",
+    "qrcode.react": "^4.2.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "react-qr-code": "^2.0.18",
     "react-router-dom": "^7.7.1",
-    "recharts": "^3.1.0",
+    "recharts": "^3.1.2",
     "tailwindcss": "^4.1.11"
   },
   "devDependencies": {

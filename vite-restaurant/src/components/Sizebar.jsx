@@ -39,17 +39,17 @@ const SizeBarComponent = ({ children }) => {
     {
       title: "Table",
       icon: <TablePropertiesIcon />,
-      path: "/login",
+      path: "/tables",
     },
     {
       title: "Sale History",
       icon: <History />,
-      path: "/login",
+      path: "/sale_history",
     },
     {
       title: "Report",
       icon: <FileChartColumnIncreasing />,
-      path: "/login",
+      path: "/report",
     },
   ];
   return (
