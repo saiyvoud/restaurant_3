@@ -62,7 +62,7 @@ export default function Category() {
   };
 
   return (
-    <SizeBarComponent>
+    <>
       <div className="min-h-screen bg-gray-50 p-6">
         {/* Header */}
         <div className="flex justify-between items-center mb-6 bg-gradient-to-r  p-4 rounded-lg shadow">
@@ -158,6 +158,6 @@ export default function Category() {
           </div>
         )}
       </div>
-    </SizeBarComponent>
+    </>
   );
 }

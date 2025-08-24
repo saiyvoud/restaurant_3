@@ -36,7 +36,7 @@ export default function ReportView() {
   ];
 
   return (
-    <SizeBarComponent>
+    <>
       <div className="p-6 bg-white rounded-lg">
         {/* Header */}
         <h1 className="text-2xl font-bold mb-6">ລາຍງານ</h1>
@@ -125,6 +125,6 @@ export default function ReportView() {
           </table>
         </div>
       </div>
-    </SizeBarComponent>
+    </>
   );
 }

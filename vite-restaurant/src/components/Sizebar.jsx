@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Outlet } from "react-router-dom";
 import {
   Home,
   MenuSquareIcon,
@@ -12,7 +12,7 @@ import {
   LogOut,
 } from "lucide-react";
 
-const SizeBarComponent = ({ children }) => {
+const SizeBarComponent = () => {
   const navigator = useNavigate();
   const [currentIndex, SetIndex] = useState(0);
   const tapMenu = [
@@ -72,12 +72,11 @@ const SizeBarComponent = ({ children }) => {
         {/* menu */}
         <div className="space-y-5 mt-2">
           {tapMenu.map((item, index) => (
-            <div key={index}
+            <div
+              key={index}
               onClick={() => {
                 SetIndex(index);
-                navigator(item.path)
-               
-           
+                navigator(item.path);
               }}
               className={
                 currentIndex == index
@@ -117,7 +116,10 @@ const SizeBarComponent = ({ children }) => {
         </div>
 
         {/* Children content */}
-        <div className="p-2 flex-1 overflow-y-auto">{children}</div>
+        <div className="p-2 flex-1 overflow-y-auto">
+        
+          <Outlet />
+        </div>
       </div>
     </div>
   );

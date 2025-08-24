@@ -56,7 +56,8 @@ const HomeView = () => {
     },
   ];
   return (
-    <SizeBarComponent>
+    <>
+    
       <div className="flex justify-center  w-full ">
         {/* ✅ Card */}
         <div className="grid grid-cols-4 gap-6  py-3 ">
@@ -89,8 +90,11 @@ const HomeView = () => {
       </div>
     </div>
       
-    </SizeBarComponent>
-  );
+ 
+ 
+    </>
+  
+    );
 };
 
 export default HomeView;

@@ -158,7 +158,8 @@ const SaleView = () => {
     },
   ];
   return (
-    <SizeBarComponent>
+    <>
+   
       <div className="flex">
         <div className="flex-col mx-2">
           {/* ✅ Category */}
@@ -256,7 +257,9 @@ const SaleView = () => {
         </div>
         </div>
       </div>
-    </SizeBarComponent>
+    
+    </>
+   
   );
 };
 

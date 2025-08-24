@@ -118,7 +118,7 @@ export default function SalesHistory() {
   }, [filtered]);
 
   return (
-    <SizeBarComponent>
+    <>
       <div className="w-full p-4 md:p-6 lg:p-8 bg-white rounded-lg">
         <h1 className="text-2xl font-semibold mb-4">Sale History</h1>
         {/* Table */}
@@ -196,6 +196,6 @@ export default function SalesHistory() {
           </div>
         </div>
       </div>
-    </SizeBarComponent>
+    </>
   );
 }
