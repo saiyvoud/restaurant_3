@@ -1,10 +1,11 @@
 const baseUrl = "http://localhost:8000/api";
 export default class apiPath {
     //------ auth ----
-    static loginPath = `${baseUrl}/user/login`;
+    static loginPath = `${baseUrl}/user/loginAdmin`;
     // ---- category -----
     static addCategory = `${baseUrl}/category/create`;
     static getCategory = `${baseUrl}/category/selAll`;
+    static getCategoryOne = `${baseUrl}/category/selOne/`;
     static updateCategory = `${baseUrl}/category/update/`;
     static deleteCategory = `${baseUrl}/category/delete/`;
     // ---- product -----

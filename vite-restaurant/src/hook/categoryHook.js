@@ -1,5 +1,5 @@
 import { useState, useCallback } from "react";
-import { getCategoryApi, addCategoryApi, updateCategoryApi, deleteCategoryApi } from "../api/categoryApi";
+import { getCategoryApi, addCategoryApi, updateCategoryApi, deleteCategoryApi, getCategoryOneApi } from "../api/categoryApi";
 import { toast } from "react-toastify";
 
 export const useCategory = () => {
@@ -29,6 +29,34 @@ export const useCategory = () => {
     }, []);
 
     return { getCategory, loading, error, category };
+};
+export const useCategoryOne = () => {
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+    const [category, setCategory] = useState(null);
+
+    // useCallback เพื่อป้องกันการสร้าง function ใหม่ทุก render
+    const getCategoryOne = useCallback(async (id) => {
+        setLoading(true);
+        try {
+            const result = await getCategoryOneApi(id)
+
+            if (result.data.success) {
+                setCategory(result.data.data);
+
+            } else {
+                setError(result.data.message);
+                toast.error(result.data.message || "Get category failed ❌");
+            }
+        } catch (err) {
+            setError(err.message);
+            toast.error(`Failed: ${err.message}`);
+        } finally {
+            setLoading(false);
+        }
+    }, []);
+
+    return { getCategoryOne, loading, error, category };
 };
 export const useAddCategory = () => {
     const [loading, setLoading] = useState(false);
@@ -65,12 +93,12 @@ export const useUpdateCategory = () => {
     const [category, setCategory] = useState(null);
 
     // useCallback เพื่อป้องกันการสร้าง function ใหม่ทุก render
-    const updateCategory = useCallback(async (formData) => {
+    const updateCategory = useCallback(async (id,formData) => {
         setLoading(true);
         try {
-            const result = await updateCategoryApi(formData);
+            const result = await updateCategoryApi(id,formData);
 
-            if (result.data.success) {
+            if (result) {
                 setCategory(result.data.data);
                 toast.success(`ອັບເດດຂໍ້ມູນສຳເລັດ`);
             } else {
@@ -99,6 +127,7 @@ export const useDeleteCategory = () => {
             const result = await deleteCategoryApi(id);
 
             if (result.data.success) {
+                setCategory(result.data.data);
                 toast.success(`ລົບຂໍ້ມູນສຳເລັດ`);
             } else {
                 setError(result.data.message);

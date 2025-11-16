@@ -1,16 +1,28 @@
 import { useEffect, useState } from "react";
 import { PlusCircle, X, Edit3, Trash2 } from "lucide-react";
-import { useCategory, useAddCategory } from "../../hook/categoryHook";
+import {
+  useCategory,
+  useAddCategory,
+  useDeleteCategory,
+} from "../../hook/categoryHook";
 import toast from "react-hot-toast";
+import { EditCategory } from "./EditCategory";
 
 export default function Category() {
   const { getCategory, loading, error, category } = useCategory();
   const { addCategory, loadAdd, errAdd } = useAddCategory();
+  const { deleteCategory, loadDel, errDel } = useDeleteCategory();
 
   // Modal state
   const [isOpen, setIsOpen] = useState(false);
   const [form, setForm] = useState({ name: "", icon: null });
   const [preview, setPreview] = useState(null);
+  // Modal state for Edit
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  // Modal state for Delete Confirmation
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const [deleteTarget, setDeleteTarget] = useState(null);
 
   useEffect(() => {
     getCategory();
@@ -54,7 +66,37 @@ export default function Category() {
       getCategory(); // ໂຫຼດຂໍ້ມູນໃໝ່
     }
   };
+  // ເປີດ Modal Edit
+  const handleEdit = (cat) => {
+    setSelectedCategory(cat);
+    setIsEditOpen(true);
+  };
+  // ຫຼັງແກ້ໄຂສຳເລັດ
+  const handleEditSuccess = () => {
+    toast.success("ແກ້ໄຂ Category ສຳເລັດ");
+    getCategory();
+  };
+  // ເປີດ Modal Delete
+  const handleDeleteClick = (cat) => {
+    setDeleteTarget(cat);
+    console.log("cat====>"+ cat);
+    setIsDeleteOpen(true);
+  };
+  // ຢືນຢັນລຶບ
+  const handleDeleteConfirm = async () => {
+    if (!deleteTarget) return;
 
+    await deleteCategory(deleteTarget.id);
+
+    if (!errDel) {
+      toast.success("ລຶບ Category ສຳເລັດ");
+      setIsDeleteOpen(false);
+      setDeleteTarget(null);
+      getCategory();
+    } else {
+      toast.error("ລຶບບໍ່ສຳເລັດ");
+    }
+  };
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       {/* Header */}
@@ -94,7 +136,9 @@ export default function Category() {
                 <th className="p-3 border-b border-amber-300">ລຳດັບ</th>
                 <th className="p-3 border-b border-amber-300">ຮູບພາບ</th>
                 <th className="p-3 border-b border-amber-300">ປະເພດອາຫານ</th>
-                <th className="p-3 border-b border-amber-300 text-center">Actions</th>
+                <th className="p-3 border-b border-amber-300 text-center">
+                  Actions
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -114,12 +158,20 @@ export default function Category() {
                         className="h-12 w-12 object-contain rounded-lg mx-auto"
                       />
                     </td>
-                    <td className="p-3 font-medium text-gray-800">{cat.categoryName}</td>
+                    <td className="p-3 font-medium text-gray-800">
+                      {cat.categoryName}
+                    </td>
                     <td className="p-3 text-center space-x-2">
-                      <button className="inline-flex items-center gap-1 px-3 py-1 bg-yellow-400 text-white rounded hover:bg-yellow-500 transition">
+                      <button
+                        onClick={() => handleEdit(cat)}
+                        className="inline-flex items-center gap-1 px-3 py-1 bg-yellow-400 text-white rounded hover:bg-yellow-500 transition"
+                      >
                         <Edit3 size={16} /> Edit
                       </button>
-                      <button className="inline-flex items-center gap-1 px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition">
+                      <button
+                        onClick={() => handleDeleteClick(cat)}
+                        className="inline-flex items-center gap-1 px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition"
+                      >
                         <Trash2 size={16} /> Delete
                       </button>
                     </td>
@@ -153,7 +205,9 @@ export default function Category() {
               <X size={24} />
             </button>
 
-            <h2 className="text-xl font-bold mb-4 text-amber-600">ເພີ່ມ Category ໃໝ່</h2>
+            <h2 className="text-xl font-bold mb-4 text-amber-600">
+              ເພີ່ມ Category ໃໝ່
+            </h2>
 
             <form onSubmit={handleSubmit} className="space-y-4">
               {/* ຊື່ */}
@@ -223,6 +277,69 @@ export default function Category() {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+      {/* EDIT MODAL */}
+      <EditCategory
+        isOpen={isEditOpen}
+        onClose={() => setIsEditOpen(false)}
+        category={selectedCategory}
+        onSuccess={handleEditSuccess}
+      />
+
+      {/* DELETE CONFIRMATION MODAL */}
+      {isDeleteOpen && (
+        <div className="fixed inset-0  bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-xl shadow-2xl w-full max-w-md p-6">
+            <div className="flex items-center justify-center w-12 h-12 mx-auto bg-red-100 rounded-full mb-4">
+              <Trash2 size={24} className="text-red-600" />
+            </div>
+
+            <h2 className="text-xl font-bold text-center text-gray-800 mb-2">
+              ຢືນຢັນການລຶບ
+            </h2>
+            <p className="text-center text-gray-600 mb-6">
+              ທ່ານແນ່ໃຈບໍ່ວ່າຕ້ອງການລຶບ Category{" "}
+              <span className="font-semibold text-gray-800">
+                "{deleteTarget?.categoryName}"
+              </span>{" "}
+              ?
+            </p>
+
+            {errDel && (
+              <p className="text-red-500 text-sm text-center mb-4">{errDel}</p>
+            )}
+
+            <div className="flex gap-3">
+              <button
+                onClick={() => {
+                  setIsDeleteOpen(false);
+                  setDeleteTarget(null);
+                }}
+                disabled={loadDel}
+                className="flex-1 px-4 py-2 bg-gray-200 text-gray-800 font-medium rounded-lg hover:bg-gray-300 transition disabled:opacity-50"
+              >
+                ຍົກເລີກ
+              </button>
+              <button
+                onClick={handleDeleteConfirm}
+                disabled={loadDel}
+                className="flex-1 px-4 py-2 bg-red-500 text-white font-medium rounded-lg hover:bg-red-600 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              >
+                {loadDel ? (
+                  <>
+                    <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-white"></div>
+                    ກຳລັງລຶບ...
+                  </>
+                ) : (
+                  <>
+                    <Trash2 size={16} />
+                    ລຶບ
+                  </>
+                )}
+              </button>
+            </div>
           </div>
         </div>
       )}

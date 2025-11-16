@@ -11,6 +11,16 @@ export const getCategoryApi = async () => {
         return error;
     }
 }
+export const getCategoryOneApi = async (id) => {
+    try {
+
+        const response = await axios.get(apiPath.getCategoryOne + id);
+        console.log(response);
+        return response;
+    } catch (error) {
+        return error;
+    }
+}
 export const addCategoryApi = async (formData) => {
     try {
         const token = Cookies.get("token");
@@ -26,10 +36,11 @@ export const addCategoryApi = async (formData) => {
         return error;
     }
 };
-export const updateCategoryApi = async (formData) => {
+export const updateCategoryApi = async (id,formData) => {
     try {
         const token = Cookies.get("token");
-        const response = await axios.put(apiPath.updateCategory + formData.id, formData, {
+        console.log(token);
+        const response = await axios.put(apiPath.updateCategory + id, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
                 'Authorization': `Bearer ${token}`,
@@ -37,11 +48,11 @@ export const updateCategoryApi = async (formData) => {
         });
         return response;
     } catch (error) {
-        console.error(error);
+         console.log(error);
         return error;
     }
 };
-export const deleteCategoryApi = async ({ id }) => {
+export const deleteCategoryApi = async ( id ) => {
     try {
         const token = Cookies.get("token");
         const response = await axios.delete(apiPath.deleteCategory + id, {
@@ -52,7 +63,7 @@ export const deleteCategoryApi = async ({ id }) => {
         });
         return response;
     } catch (error) {
-        console.error(error);
+        console.log(error);
         return error;
     }
 };
